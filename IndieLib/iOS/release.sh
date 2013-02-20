@@ -1,5 +1,5 @@
 #bin/sh
-DEPSDIR="../common/dependencies"
+
 TUTORIALSDIR="../tutorials/iOS"
 DESTDIR="../../../"
 
@@ -16,22 +16,10 @@ echo $ARCHIVENAME
 RUNDIR=`pwd`
 
 echo "WORKING FROM: $RUNDIR"
-echo "DEPENDENCIES RELATIVE DIR: $DEPSDIR"
 echo "TUTORIALS RELATIVE DIR: $TUTORIALSDIR"
 echo "DESTINATION DIRECTORY: $DESTDIR"
 
-#build dependencies
-cd $DEPSDIR
-
-#FreeImage
-cd ../../FreeImage
-make clean
-make -f Makefile.iphone
-
-#SDL
-cd ../SDL-2.0/build-scripts/
-MIN_OS_VERSION=5.1 ./iosbuild.sh configure-armv7
-MIN_OS_VERSION=5.1 ./iosbuild.sh make-armv7
+./buildDependencies.sh
 
 #clean all targets first
 cd $RUNDIR
