@@ -1,6 +1,6 @@
 #bin/sh
 DEPSDIR="../common/dependencies"
-TUTORIALSDIR="../tutorials/mac"
+TUTORIALSDIR="../tutorials/iOS"
 DESTDIR="../../../"
 
 echo $1
@@ -23,43 +23,32 @@ echo "DESTINATION DIRECTORY: $DESTDIR"
 #build dependencies
 cd $DEPSDIR
 
-#builds static + shared. Will delete shared to link statically
-cd ./FreeImage
+#FreeImage
+cd ../../FreeImage
 make clean
-make
-rm Dist/*.dylib
+make -f Makefile.iphone
 
-#build static SDL lib only
-cd ../SDL-2.0
-./configure --disable-shared --enable-static --prefix=`pwd`/osx
-make clean
-make
-make install
-
-#builds static + shared. Will delete shared to link statically
-cd ../glew-1.9.0
-make clean
-make
-rm lib/*.dylib
+#SDL
+cd ../SDL-2.0/build-scripts/
+MIN_OS_VERSION=5.1 ./iosbuild.sh configure-armv7
+MIN_OS_VERSION=5.1 ./iosbuild.sh make-armv7
 
 #clean all targets first
 cd $RUNDIR
 
 echo "************CLEAN ALL TARGETS*******************"
-ALLSCHEMES=$(xcodebuild -workspace IndielibOSX.xcworkspace -list)
+ALLSCHEMES=$(xcodebuild -workspace IndielibiOS.xcworkspace -list)
 
 for SCHEME in $ALLSCHEMES
 do
-xcodebuild -workspace IndielibOSX.xcworkspace -scheme $SCHEME clean
+xcodebuild -workspace IndielibiOS.xcworkspace -scheme $SCHEME clean
 done
 
 #build indielib
 echo"*************BUILD INDIELIB**********************"
-xcodebuild -workspace IndielibOSX.xcworkspace -scheme IndieLib -configuration release
+xcodebuild -workspace IndielibiOS.xcworkspace -scheme IndieLib -configuration release
 
-#build tutorials
-cd $TUTORIALSDIR
-./release.sh
+#no tutorials built. Packaged as source code
 
 #package distributable files in zip
 echo"*************PACKAGE FILES************************"
