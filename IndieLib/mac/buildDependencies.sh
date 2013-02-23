@@ -14,7 +14,7 @@ rm Dist/*.dylib
 
 #build static SDL lib only
 cd ../SDL-2.0
-./configure --disable-shared --enable-static --prefix=`pwd`/osx
+./configure --disable-shared --enable-static --prefix=`pwd`/build/osx
 make clean
 make
 make install
