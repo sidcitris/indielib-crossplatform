@@ -122,16 +122,13 @@ else
 fi
 case $phase in
     all)
-        configure_armv6="yes"
         configure_armv7="yes"
         configure_i386="yes"
-        make_armv6="yes"
         make_armv7="yes"
         make_i386="yes"
         merge="yes"
         ;;
     configure)
-        configure_armv6="yes"
         configure_armv7="yes"
         configure_i386="yes"
         ;;
@@ -145,7 +142,6 @@ case $phase in
         configure_i386="yes"
         ;;
     make)
-        make_armv6="yes"
         make_armv7="yes"
         make_i386="yes"
         merge="yes"
@@ -250,8 +246,8 @@ if test x$merge = xyes; then
     sh $auxdir/mkinstalldirs build/$output
     cd build
     target=`find . -mindepth 4 -maxdepth 4 -type f -name '*.dylib' | head -1 | sed 's|.*/||'`
-    (lipo -create -o $output/libSDL2.a armv6/build/.libs/libSDL2.a armv7/build/.libs/libSDL2.a i386/build/.libs/libSDL2.a &&
-     lipo -create -o $output/libSDL2main.a armv6/build/libSDL2main.a armv7/build/libSDL2main.a i386/build/libSDL2main.a &&
+    (lipo -create -o $output/libSDL2.a armv7/build/.libs/libSDL2.a i386/build/.libs/libSDL2.a &&
+     lipo -create -o $output/libSDL2main.a armv7/build/libSDL2main.a i386/build/libSDL2main.a &&
      cp -r armv6/include ios
      echo "Build complete!" &&
      echo "Files can be found under the build/ios directory.") || exit 4
